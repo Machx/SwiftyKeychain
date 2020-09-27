@@ -13,3 +13,34 @@
 /// limitations under the License.
 
 import Foundation
+
+public final class Keychain {
+	static let shared = Keychain()
+	
+	public enum KeychainServiceError: Error {
+		case noPassword
+		case errorEncodingData
+		case unhandledError(status: OSStatus)
+	}
+	
+	func retrievePassword() -> Result<String,KeychainServiceError> {
+		return .success("Hello")
+	}
+	
+	/// Saves the password to the keychain
+	/// - Parameter password: The given password
+	/// - Returns: Result with success if successful, otherwise returns an error if save failed.
+	func save(password: String) -> Result<Bool,KeychainServiceError> {
+		guard let encodedPassword = password.data(using: .utf8) else { return .failure(.errorEncodingData) }
+		
+		do {
+			
+		}
+		
+		return .success(true)
+	}
+	
+	private static func query(withService: String, account: String? = nil, accessGroup: String? = nil) -> [String:AnyObject] {
+		return [:]
+	}
+}
