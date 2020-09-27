@@ -20,6 +20,7 @@ public final class Keychain {
 	public enum KeychainServiceError: Error {
 		case noPassword
 		case errorEncodingData
+		case failureSavingNewPassword
 		case unhandledError(status: OSStatus)
 	}
 	
