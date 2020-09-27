@@ -31,11 +31,29 @@ public final class Keychain {
 	/// Saves the password to the keychain
 	/// - Parameter password: The given password
 	/// - Returns: Result with success if successful, otherwise returns an error if save failed.
-	func save(password: String) -> Result<Bool,KeychainServiceError> {
+	func save(password: String, forAccount account: String, accessGroup: String? = nil, service: String = "") -> Result<Bool,KeychainServiceError> {
 		guard let encodedPassword = password.data(using: .utf8) else { return .failure(.errorEncodingData) }
 		
-		do {
+		let passwordresult = retrievePassword()
+		if case .success(let retrievedPassword) = passwordresult {
+			// Previous Password Stored in Keychain...
+			guard retrievedPassword != password else { return .success(true) }
 			
+			var updatingAttributes = [String:AnyObject]()
+			updatingAttributes[kSecValueData as String] = encodedPassword as AnyObject
+			
+			let passwordQuery = query(withService: service, account: account, accessGroup: accessGroup)
+			let status = SecItemUpdate(passwordQuery as CFDictionary, updatingAttributes as CFDictionary)
+			
+			guard status == noErr else { return .failure(.unhandledError(status: status)) }
+		} else {
+			// No password currently stored in the keychain...
+			var newPassword = query(withService: service, account: account, accessGroup: accessGroup)
+			newPassword[kSecValueData as String] = encodedPassword as AnyObject?
+			
+			let status = SecItemAdd(newPassword as CFDictionary, nil)
+			
+			guard status == noErr else { return .failure(.failureSavingNewPassword) }
 		}
 		
 		return .success(true)
