@@ -55,16 +55,15 @@ public final class Keychain {
 		return query
 	}
 	
-	private enum KeyChainResultLimit {
+	private enum ResultLimit {
 		case one
 		case all
 	}
 	
-	private func configure(query: inout [String:AnyObject], limit: KeyChainResultLimit = .one, returnAttributes: Bool, returnData: Bool) {
-		switch limit {
-		case .one:
+	private func configure(_ query: inout [String:AnyObject], limit: ResultLimit = .one, returnAttributes: Bool, returnData: Bool) {
+		if case ResultLimit.one = limit {
 			query[kSecMatchLimit as String] = kSecMatchLimitOne
-		case .all:
+		} else {
 			query[kSecMatchLimit as String] = kSecMatchLimitAll
 		}
 		query[kSecReturnAttributes as String] = returnAttributes ? kCFBooleanTrue : kCFBooleanFalse
