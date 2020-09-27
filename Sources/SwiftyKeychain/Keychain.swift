@@ -40,7 +40,19 @@ public final class Keychain {
 		return .success(true)
 	}
 	
-	private static func query(withService: String, account: String? = nil, accessGroup: String? = nil) -> [String:AnyObject] {
-		return [:]
+	private static func query(withService service: String, account: String? = nil, accessGroup: String? = nil) -> [String:AnyObject] {
+		var query = [String: AnyObject]()
+		query[kSecClass as String] = kSecClassGenericPassword
+		query[kSecAttrService as String] = service as AnyObject
+		
+		if let account = account {
+			query[kSecAttrAccount as String] = account as AnyObject
+		}
+		if let accessGroup = accessGroup {
+			query[kSecAttrAccessGroup as String] = accessGroup as AnyObject
+		}
+		
+		return query
+	}
 	}
 }
