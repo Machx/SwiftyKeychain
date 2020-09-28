@@ -53,7 +53,7 @@ public final class Keychain {
 	func save(password: String, forAccount account: String, accessGroup: String? = nil, service: String = "") -> Result<Bool,KeychainServiceError> {
 		guard let encodedPassword = password.data(using: .utf8) else { return .failure(.errorEncodingData) }
 		
-		let passwordresult = retrievePassword()
+		let passwordresult = retrievePassword(withService: service, account: account, accessGroup: accessGroup)
 		if case .success(let retrievedPassword) = passwordresult {
 			// Previous Password Stored in Keychain...
 			guard retrievedPassword != password else { return .success(true) }
