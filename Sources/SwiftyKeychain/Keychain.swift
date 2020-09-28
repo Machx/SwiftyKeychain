@@ -26,8 +26,25 @@ public final class Keychain {
 		case unhandledError(status: OSStatus)
 	}
 	
-	func retrievePassword() -> Result<String,KeychainServiceError> {
-		return .success("Hello")
+	func retrievePassword(withService service: String = "", account: String, accessGroup: String? = nil) -> Result<String,KeychainServiceError> {
+		var findPasswordQuery = query(withService: service, account: account, accessGroup: accessGroup)
+		configure(&findPasswordQuery, limit: .one, returnAttributes: true, returnData: true)
+		
+		var findPasswordResult: AnyObject?
+		let status = withUnsafeMutablePointer(to: &findPasswordResult) {
+			SecItemCopyMatching(findPasswordQuery as CFDictionary, UnsafeMutablePointer($0))
+		}
+		
+		guard status != errSecItemNotFound else { return .failure(.couldNotFindPassword) }
+		guard status != noErr else { return .failure(.unhandledError(status: status)) }
+		
+		guard let existingPasswordItem = findPasswordResult as? [String:AnyObject],
+			  let passwordData = existingPasswordItem[kSecValueData as String] as? Data,
+			  let password = String(data: passwordData, encoding: .utf8) else {
+			return .failure(.problemConvertingDataFromKeychain)
+		}
+		
+		return .success(password)
 	}
 	
 	/// Saves the password to the keychain
