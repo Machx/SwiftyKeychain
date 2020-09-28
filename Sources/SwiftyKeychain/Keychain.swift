@@ -21,6 +21,8 @@ public final class Keychain {
 		case noPassword
 		case errorEncodingData
 		case failureSavingNewPassword
+		case couldNotFindPassword
+		case problemConvertingDataFromKeychain
 		case unhandledError(status: OSStatus)
 	}
 	
