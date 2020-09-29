@@ -48,10 +48,15 @@ public final class Keychain {
 		return .success(password)
 	}
 	
-	/// Saves the password to the keychain
-	/// - Parameter password: The given password
-	/// - Returns: Result with success if successful, otherwise returns an error if save failed.
-	func save(password: String, forAccount account: String, accessGroup: String? = nil, service: String = "") -> Result<Bool,KeychainServiceError> {
+	
+	/// Saves the password to the keychain with the given additional parameters.
+	/// - Parameters:
+	///   - password: The Password to be saved.
+	///   - account: The Account associated with the Password.
+	///   - service: A required Service to use to associate the account/password with.
+	///   - accessGroup: An optional accessGroup to use to associate with the password.
+	/// - Returns: A result of success (always will return true) if successfully saved, otherwise returns an error.
+	func save(password: String, forAccount account: String, service: String, accessGroup: String? = nil) -> Result<Bool,KeychainServiceError> {
 		guard let encodedPassword = password.data(using: .utf8) else { return .failure(.errorEncodingData) }
 		
 		let passwordresult = retrievePassword(withService: service, account: account, accessGroup: accessGroup)
