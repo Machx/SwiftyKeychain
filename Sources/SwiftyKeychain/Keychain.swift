@@ -24,6 +24,7 @@ public final class Keychain {
 		case failureSavingNewPassword          // Error saving password to keychain when calling SecItemAdd()
 		case couldNotFindPassword              // Could not find existing password in keychain
 		case problemConvertingDataFromKeychain // Error extracting password from SecItemCopyMatching() result
+		case serviceNotSpecified               // A Service was not set
 		case unhandledError(status: OSStatus)  // Unknown Error with OSStatus Code
 	}
 	
