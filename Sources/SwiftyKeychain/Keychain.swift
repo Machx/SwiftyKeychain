@@ -79,6 +79,13 @@ public final class Keychain {
 		return .success(true)
 	}
 	
+	
+	/// Creates queries used in the Keychain API's.
+	/// - Parameters:
+	///   - service: Service accociated with the Password.
+	///   - account: Account accociated with the Password.
+	///   - accessGroup: Access Group associated with the Password
+	/// - Returns: A Dictionary object which can be cast to CFDictionary for use with the Keychain API's.
 	private func query(withService service: String, account: String? = nil, accessGroup: String? = nil) -> [String:AnyObject] {
 		var query = [String: AnyObject]()
 		query[kSecClass as String] = kSecClassGenericPassword
@@ -95,9 +102,10 @@ public final class Keychain {
 		return query
 	}
 	
+	/// Type used to describe how many rsults should be returned in Keychain Query API's.
 	private enum ResultLimit {
-		case one
-		case all
+		case one // Only 1 result should be returned.
+		case all // All results should be returned.
 	}
 	
 	private func configure(_ query: inout [String:AnyObject], limit: ResultLimit = .one, returnAttributes: Bool, returnData: Bool) {
