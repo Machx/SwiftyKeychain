@@ -18,13 +18,13 @@ import Security
 public final class Keychain {
 	static let shared = Keychain()
 	
+	/// Errors used in the Keychain Result API's.
 	public enum KeychainServiceError: Error {
-		case noPassword
-		case errorEncodingData
-		case failureSavingNewPassword
-		case couldNotFindPassword
-		case problemConvertingDataFromKeychain
-		case unhandledError(status: OSStatus)
+		case errorEncodingData                 // Error encoding String to Data
+		case failureSavingNewPassword          // Error saving password to keychain when calling SecItemAdd()
+		case couldNotFindPassword              // Could not find existing password in keychain
+		case problemConvertingDataFromKeychain // Error extracting password from SecItemCopyMatching() result
+		case unhandledError(status: OSStatus)  // Unknown Error with OSStatus Code
 	}
 	
 	func retrievePassword(withService service: String = "", account: String, accessGroup: String? = nil) -> Result<String,KeychainServiceError> {
