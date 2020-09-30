@@ -28,6 +28,7 @@ public final class Keychain {
 		case unhandledError(status: OSStatus)  // Unknown Error with OSStatus Code
 	}
 	
+	@discardableResult
 	public func retrievePassword(withService service: String = "", account: String, accessGroup: String? = nil) -> Result<String,KeychainServiceError> {
 		guard service.count > 0 else { return .failure(.serviceNotSpecified) }
 		var findPasswordQuery = query(withService: service, account: account, accessGroup: accessGroup)
