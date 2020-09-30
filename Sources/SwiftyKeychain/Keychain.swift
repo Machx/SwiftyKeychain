@@ -16,7 +16,7 @@ import Foundation
 import Security
 
 public final class Keychain {
-	static let shared = Keychain()
+	static public let shared = Keychain()
 	
 	/// Errors used in the Keychain Result API's.
 	public enum KeychainServiceError: Error {
