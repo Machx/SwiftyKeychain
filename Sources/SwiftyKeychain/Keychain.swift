@@ -36,7 +36,7 @@ public final class Keychain {
 	/// - Returns: A Result with the password, or an error describing the problem encountered retrieving it.
 	@discardableResult
 	public func retrievePassword(withService service: String = "", account: String, accessGroup: String? = nil) -> Result<String,KeychainServiceError> {
-		guard service.count > 0 else { return .failure(.serviceNotSpecified) }
+		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
 		var findPasswordQuery = query(withService: service, account: account, accessGroup: accessGroup)
 		configure(&findPasswordQuery, limit: .one, returnAttributes: true, returnData: true)
 		
@@ -67,7 +67,7 @@ public final class Keychain {
 	/// - Returns: A result of success (always will return true) if successfully saved, otherwise returns an error.
 	@discardableResult
 	public func save(password: String, forAccount account: String, service: String, accessGroup: String? = nil) -> Result<Bool,KeychainServiceError> {
-		guard service.count > 0 else { return .failure(.serviceNotSpecified) }
+		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
 		guard let encodedPassword = password.data(using: .utf8) else { return .failure(.errorEncodingData) }
 		
 		let passwordresult = retrievePassword(withService: service, account: account, accessGroup: accessGroup)
