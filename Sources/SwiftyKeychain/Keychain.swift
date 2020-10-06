@@ -16,7 +16,6 @@ import Foundation
 import Security
 
 public final class Keychain {
-	static public let shared = Keychain()
 	
 	/// Errors used in the Keychain Result API's.
 	public enum KeychainServiceError: Error {
@@ -35,7 +34,7 @@ public final class Keychain {
 	///   - accessGroup: Optional Access group associated with the password.
 	/// - Returns: A Result with the password, or an error describing the problem encountered retrieving it.
 	@discardableResult
-	public func retrievePassword(withService service: String = "", account: String, accessGroup: String? = nil) -> Result<String,KeychainServiceError> {
+	public class func retrievePassword(withService service: String = "", account: String, accessGroup: String? = nil) -> Result<String,KeychainServiceError> {
 		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
 		var findPasswordQuery = query(withService: service, account: account, accessGroup: accessGroup)
 		configure(&findPasswordQuery, limit: .one, returnAttributes: true, returnData: true)
@@ -66,7 +65,7 @@ public final class Keychain {
 	///   - accessGroup: An optional accessGroup to use to associate with the password.
 	/// - Returns: A result of success (always will return true) if successfully saved, otherwise returns an error.
 	@discardableResult
-	public func save(password: String, forAccount account: String, service: String, accessGroup: String? = nil) -> Result<Bool,KeychainServiceError> {
+	public class func save(password: String, forAccount account: String, service: String, accessGroup: String? = nil) -> Result<Bool,KeychainServiceError> {
 		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
 		guard let encodedPassword = password.data(using: .utf8) else { return .failure(.errorEncodingData) }
 		
@@ -102,7 +101,7 @@ public final class Keychain {
 	///   - account: Account accociated with the Password.
 	///   - accessGroup: Access Group associated with the Password
 	/// - Returns: A Dictionary object which can be cast to CFDictionary for use with the Keychain API's.
-	private func query(withService service: String, account: String? = nil, accessGroup: String? = nil) -> [String:AnyObject] {
+	private class func query(withService service: String, account: String? = nil, accessGroup: String? = nil) -> [String:AnyObject] {
 		var query = [String: AnyObject]()
 		query[kSecClass as String] = kSecClassGenericPassword
 		query[kSecAttrService as String] = service as AnyObject
@@ -124,7 +123,7 @@ public final class Keychain {
 		case all // All results should be returned.
 	}
 	
-	private func configure(_ query: inout [String:AnyObject], limit: ResultLimit = .one, returnAttributes: Bool, returnData: Bool) {
+	private class func configure(_ query: inout [String:AnyObject], limit: ResultLimit = .one, returnAttributes: Bool, returnData: Bool) {
 		if case ResultLimit.one = limit {
 			query[kSecMatchLimit as String] = kSecMatchLimitOne
 		} else {
