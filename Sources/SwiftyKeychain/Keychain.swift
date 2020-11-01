@@ -21,7 +21,7 @@ public final class Keychain {
 	public typealias KeychainSaveResult = Result<Bool, KeychainServiceError>
 	
 	/// Errors used in the Keychain Result API's.
-	public enum KeychainServiceError: Error {
+	public enum KeychainServiceError: Error, Equatable {
 		case errorEncodingData                 // Error encoding String to Data
 		case failureSavingNewPassword          // Error saving password to keychain when calling SecItemAdd()
 		case couldNotFindPassword              // Could not find existing password in keychain
@@ -37,8 +37,10 @@ public final class Keychain {
 	///   - accessGroup: Optional Access group associated with the password.
 	/// - Returns: A Result with the password, or an error describing the problem encountered retrieving it.
 	@discardableResult
-	public class func retrievePassword(withService service: String = "", account: String, accessGroup: String? = nil) -> Result<String,KeychainServiceError> {
-		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
+	public class func retrievePassword(withService service: String = "", account: String, accessGroup: String? = nil) -> KeychainPasswordResult {
+		guard !service.isEmpty else {
+			return .failure(.serviceNotSpecified)
+		}
 		var findPasswordQuery = query(withService: service, account: account, accessGroup: accessGroup)
 		configure(&findPasswordQuery, limit: .one, returnAttributes: true, returnData: true)
 		
@@ -47,7 +49,9 @@ public final class Keychain {
 			SecItemCopyMatching(findPasswordQuery as CFDictionary, UnsafeMutablePointer($0))
 		}
 		
-		guard status != errSecItemNotFound else { return .failure(.couldNotFindPassword) }
+		guard status != errSecItemNotFound else {
+			return .failure(.couldNotFindPassword)
+		}
 		guard status == noErr else {
 			return .failure(.unhandledError(status: status))
 		}
@@ -70,14 +74,16 @@ public final class Keychain {
 	///   - accessGroup: An optional accessGroup to use to associate with the password.
 	/// - Returns: A result of success (always will return true) if successfully saved, otherwise returns an error.
 	@discardableResult
-	public class func save(password: String, forAccount account: String, service: String, accessGroup: String? = nil) -> Result<Bool,KeychainServiceError> {
+	public class func save(password: String, forAccount account: String, service: String, accessGroup: String? = nil) -> KeychainSaveResult {
 		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
 		guard let encodedPassword = password.data(using: .utf8) else { return .failure(.errorEncodingData) }
 		
 		let passwordresult = retrievePassword(withService: service, account: account, accessGroup: accessGroup)
 		if case .success(let retrievedPassword) = passwordresult {
 			// Previous Password Stored in Keychain...
-			guard retrievedPassword != password else { return .success(true) }
+			guard retrievedPassword != password else {
+				return .success(true)
+			}
 			
 			var updatingAttributes = [String:AnyObject]()
 			updatingAttributes[kSecValueData as String] = encodedPassword as AnyObject
@@ -85,15 +91,20 @@ public final class Keychain {
 			let passwordQuery = query(withService: service, account: account, accessGroup: accessGroup)
 			let status = SecItemUpdate(passwordQuery as CFDictionary, updatingAttributes as CFDictionary)
 			
-			guard status == noErr else { return .failure(.unhandledError(status: status)) }
+			guard status == noErr else {
+				return .failure(.unhandledError(status: status))
+			}
 		} else {
 			// No password currently stored in the keychain...
 			var newPassword = query(withService: service, account: account, accessGroup: accessGroup)
 			newPassword[kSecValueData as String] = encodedPassword as AnyObject?
 			
 			let status = SecItemAdd(newPassword as CFDictionary, nil)
+			print("" + String(SecCopyErrorMessageString(status, nil) ?? ""))
 			
-			guard status == noErr else { return .failure(.failureSavingNewPassword) }
+			guard status == noErr else {
+				return .failure(.failureSavingNewPassword)
+			}
 		}
 		
 		return .success(true)
