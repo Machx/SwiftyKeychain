@@ -45,7 +45,9 @@ public final class Keychain {
 		}
 		
 		guard status != errSecItemNotFound else { return .failure(.couldNotFindPassword) }
-		guard status != noErr else { return .failure(.unhandledError(status: status)) }
+		guard status == noErr else {
+			return .failure(.unhandledError(status: status))
+		}
 		
 		guard let existingPasswordItem = findPasswordResult as? [String:AnyObject],
 			  let passwordData = existingPasswordItem[kSecValueData as String] as? Data,
