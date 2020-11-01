@@ -17,6 +17,9 @@ import Security
 
 public final class Keychain {
 	
+	public typealias KeychainPasswordResult = Result<String, KeychainServiceError>
+	public typealias KeychainSaveResult = Result<Bool, KeychainServiceError>
+	
 	/// Errors used in the Keychain Result API's.
 	public enum KeychainServiceError: Error {
 		case errorEncodingData                 // Error encoding String to Data
