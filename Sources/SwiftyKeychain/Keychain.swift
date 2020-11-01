@@ -112,6 +112,29 @@ public final class Keychain {
 		return .success(true)
 	}
 	
+	/// Removes a given password from the Keychain
+	/// - Parameters:
+	///   - service: A required Service that the account/password as associated with.
+	///   - account: The Account associated with the Password.
+	///   - accessGroup: Optional Access group associated with the password.
+	/// - Returns: A Bool value of true on success, otherwise returns a KeychainServiceError describing the issue encountered.
+	@discardableResult
+	public class func removePassword(withService service: String = "", account: String, accessGroup: String? = nil) -> KeychainResult {
+		let deleteQuery = query(withService: service, account: account, accessGroup: accessGroup)
+		let status = SecItemDelete(deleteQuery as CFDictionary)
+		
+		guard status != errSecItemNotFound else {
+			return .failure(.couldNotFindPassword)
+		}
+		guard status == noErr else {
+			return .failure(.unhandledError(status: status))
+		}
+		
+		return .success(true)
+	}
+	
+	//MARK: - Private Support Functions
+	
 	
 	/// Creates queries used in the Keychain API's.
 	/// - Parameters:
