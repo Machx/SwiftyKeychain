@@ -102,9 +102,9 @@ public final class Keychain {
 			newPassword[kSecValueData as String] = encodedPassword as AnyObject?
 			
 			let status = SecItemAdd(newPassword as CFDictionary, nil)
-			print("" + String(SecCopyErrorMessageString(status, nil) ?? ""))
 			
 			guard status == noErr else {
+				print("Error saving password" + String(SecCopyErrorMessageString(status, nil) ?? ""))
 				return .failure(.failureSavingNewPassword)
 			}
 		}
