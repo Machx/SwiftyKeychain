@@ -1,6 +1,26 @@
 # SwiftyKeychain
 
-A package meant for being my own API's for my projects to read from and write to the keychain.
+SwiftyKeychain is a Swift Package that provides API's that wrap around Apples API's that provide access to the Keychain. 
+
+## Usage
+
+```swift
+let password = "1234"
+let account = "cdw"
+
+//Saving a Password
+let result = Keychain.save(password: password,
+						   forAccount: account,
+						   service: service)
+
+// Retrieving a password
+let retrieveResult = Keychain.retrievePassword(withService: service,
+			account: account)
+
+// Deleting a password
+Keychain.removePassword(withService: service,
+			account: account)
+```
 
 ## License
 
