@@ -43,8 +43,7 @@ final class SwiftyKeychainTests: XCTestCase {
 		}
 		
 		Keychain.removePassword(withService: service,
-								account: account,
-								accessGroup: nil)
+								account: account)
 	}
 	
 	func testKeychainDelete() {
