@@ -23,6 +23,7 @@ Keychain.removePassword(withService: service,
 ```
 
 ## License
+SwiftyKeychain is licensed under the Apache 2 license.
 
 ```
 Copyright 2020 Colin Wheeler
