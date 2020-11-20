@@ -1,6 +1,6 @@
 # SwiftyKeychain
 
-SwiftyKeychain is a Swift Package that provides API's that wrap around Apples API's that provide access to the Keychain. 
+Swifty keychain is a simple Swift API wrapper around Apples Keychain API's. 
 
 ## Usage
 
