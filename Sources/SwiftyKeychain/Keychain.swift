@@ -152,7 +152,9 @@ public final class Keychain {
 	///   - account: Account associated with the Password.
 	///   - accessGroup: Access Group associated with the Password
 	/// - Returns: A Dictionary object which can be cast to CFDictionary for use with the Keychain API's.
-	private class func query(withService service: String, account: String? = nil, accessGroup: String? = nil) -> [String:AnyObject] {
+	private class func query(withService service: String,
+							 account: String? = nil,
+							 accessGroup: String? = nil) -> [String:AnyObject] {
 		var query = [String: AnyObject]()
 		query[kSecClass as String] = kSecClassGenericPassword
 		query[kSecAttrService as String] = service as AnyObject
