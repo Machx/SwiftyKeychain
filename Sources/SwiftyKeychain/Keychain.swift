@@ -169,7 +169,10 @@ public final class Keychain {
 		case all // All results should be returned.
 	}
 	
-	private class func configure(_ query: inout [String:AnyObject], limit: ResultLimit = .one, returnAttributes: Bool, returnData: Bool) {
+	private class func configure(_ query: inout [String:AnyObject],
+								 limit: ResultLimit = .one,
+								 returnAttributes: Bool,
+								 returnData: Bool) {
 		if case ResultLimit.one = limit {
 			query[kSecMatchLimit as String] = kSecMatchLimitOne
 		} else {
