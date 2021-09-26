@@ -82,8 +82,8 @@ public final class Keychain {
 		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
 		guard let encodedPassword = password.data(using: .utf8) else { return .failure(.errorEncodingData) }
 		
-		let passwordresult = retrievePassword(withService: service, account: account, accessGroup: accessGroup)
-		if case .success(let retrievedPassword) = passwordresult {
+		let passwordResult = retrievePassword(withService: service, account: account, accessGroup: accessGroup)
+		if case .success(let retrievedPassword) = passwordResult {
 			// Previous Password Stored in Keychain...
 			guard retrievedPassword != password else {
 				return .success(true)
