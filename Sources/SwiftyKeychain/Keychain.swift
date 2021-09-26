@@ -126,7 +126,9 @@ public final class Keychain {
 	///   - accessGroup: Optional Access group associated with the password.
 	/// - Returns: A Bool value of true on success, otherwise returns a KeychainServiceError describing the issue encountered.
 	@discardableResult
-	public class func removePassword(withService service: String, account: String, accessGroup: String? = nil) -> KeychainResult {
+	public class func removePassword(withService service: String,
+									 account: String,
+									 accessGroup: String? = nil) -> KeychainResult {
 		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
 		let deleteQuery = query(withService: service, account: account, accessGroup: accessGroup)
 		let status = SecItemDelete(deleteQuery as CFDictionary)
