@@ -53,8 +53,8 @@ final class SwiftyKeychainTests: XCTestCase {
 		let retrieveResult = Keychain.retrievePassword(withService: service,
 													   account: account,
 													   accessGroup: nil)
-		if case let Keychain.KeychainPasswordResult.success(_) = retrieveResult {
-			XCTFail("Should not have retrieved a password for an account which should not exist")
+		if case let Keychain.KeychainPasswordResult.success(retrievedPassword) = retrieveResult {
+			XCTFail("Should not have retrieved a password for an account which should not exist. Password = '\(retrievedPassword)'")
 		}
 	}
 	
