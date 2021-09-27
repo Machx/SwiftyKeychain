@@ -47,29 +47,15 @@ final class SwiftyKeychainTests: XCTestCase {
 	}
 	
 	func testVerifyKeychainRetrieveFails() {
-		let password = "1234"
-		let account = "cdw"
-		let service = "com.SwiftyKeychain.UnitTest"
-		
-		let result = Keychain.save(password: password,
-								   forAccount: account,
-								   service: service)
-		if case let Keychain.KeychainResult.failure(error) = result {
-			XCTFail("Failed with error \(error)")
-			return
-		}
+		let account = UUID().uuidString
+		let service = UUID().uuidString
 		
 		let retrieveResult = Keychain.retrievePassword(withService: service,
 													   account: account,
 													   accessGroup: nil)
-		if case let Keychain.KeychainPasswordResult.failure(error) = retrieveResult {
-			XCTFail("Failed with error \(error)")
-		} else if case let Keychain.KeychainPasswordResult.success(retrievedPassword) = retrieveResult {
-			XCTAssertEqual(retrievedPassword, password)
+		if case let Keychain.KeychainPasswordResult.success(_) = retrieveResult {
+			XCTFail("Should not have retrieved a password for an account which should not exist")
 		}
-		
-		Keychain.removePassword(withService: service,
-								account: account)
 	}
 	
 	func testKeychainDelete() {
