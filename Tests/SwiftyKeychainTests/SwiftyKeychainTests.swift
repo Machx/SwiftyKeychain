@@ -56,6 +56,12 @@ final class SwiftyKeychainTests: XCTestCase {
 		if case let Keychain.KeychainPasswordResult.success(retrievedPassword) = retrieveResult {
 			XCTFail("Should not have retrieved a password for an account which should not exist. Password = '\(retrievedPassword)'")
 		}
+		
+		if case let Keychain.KeychainPasswordResult.failure(keychainError) = retrieveResult {
+			XCTAssertEqual(keychainError, .couldNotFindPassword)
+		} else {
+			XCTFail("Somehow the failure was not detected")
+		}
 	}
 	
 	func testKeychainDelete() {
