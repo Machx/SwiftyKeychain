@@ -130,10 +130,4 @@ final class SwiftyKeychainTests: XCTestCase {
 			XCTFail("Found a password when we shouldn't have found one")
 		}
 	}
-
-    static var allTests = [
-        ("testVerifyKeychainSave", testVerifyKeychainSave),
-		("testVerifyKeychainRetrieve", testVerifyKeychainRetrieve),
-		("testKeychainDelete", testKeychainDelete),
-    ]
 }
