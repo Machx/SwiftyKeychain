@@ -109,9 +109,6 @@ public final class Keychain {
 			let status = SecItemAdd(newPassword as CFDictionary, nil)
 			
 			guard status == noErr else {
-				if #available(iOS 11.3, *) {
-					print("Error saving password" + String(SecCopyErrorMessageString(status, nil) ?? ""))
-				}
 				return .failure(.failureSavingNewPassword)
 			}
 		}
