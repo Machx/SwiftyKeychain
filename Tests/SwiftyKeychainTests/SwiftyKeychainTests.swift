@@ -20,6 +20,37 @@ final class SwiftyKeychainTests: XCTestCase {
 								accessGroup: nil)
 	}
 	
+	func testPasswordUpdate() {
+		let password = "1234"
+		let account = "cdw"
+		let service = "com.SwiftyKeychain.UnitTest"
+		
+		let result = Keychain.save(password: password,
+								   forAccount: account,
+								   service: service)
+		
+		if case let Keychain.KeychainResult.failure(error) = result {
+			XCTFail("Failed to save password to keychain with error = \(error)")
+		}
+		
+		Keychain.save(password: "4321",
+					  forAccount: account,
+					  service: service)
+		
+		let retrieveResult = Keychain.retrievePassword(withService: service,
+													   account: account,
+													   accessGroup: nil)
+		if case let Keychain.KeychainPasswordResult.failure(error) = retrieveResult {
+			XCTFail("Failed with error \(error)")
+		} else if case let Keychain.KeychainPasswordResult.success(retrievedPassword) = retrieveResult {
+			XCTAssertEqual(retrievedPassword, "4321")
+		}
+		
+		Keychain.removePassword(withService: service,
+								account: account,
+								accessGroup: nil)
+	}
+	
 	func testVerifyKeychainRetrieve() {
 		let password = "1234"
 		let account = "cdw"
