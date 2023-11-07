@@ -79,8 +79,8 @@ public final class Keychain {
 	/// - Returns: A result of success (always will return true) if successfully saved, otherwise returns an error.
 	@discardableResult
 	public class func save(password: String,
-						   forAccount account: String?,
-						   service: String,
+						   forAccount account: String? = nil,
+						   forService service: String,
 						   accessGroup: String? = nil) -> KeychainResult {
 		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
 		guard let encodedPassword = password.data(using: .utf8) else { return .failure(.errorEncodingData) }
