@@ -40,7 +40,7 @@ public final class Keychain {
 	/// - Returns: A Result with the password, or an error describing the problem encountered retrieving it.
 	@discardableResult
 	public class func retrievePassword(withService service: String,
-									   account: String?,
+									   account: String? = nil,
 									   accessGroup: String? = nil) -> KeychainPasswordResult {
 		guard !service.isEmpty else {
 			return .failure(.serviceNotSpecified)
@@ -124,7 +124,7 @@ public final class Keychain {
 	/// - Returns: A Bool value of true on success, otherwise returns a KeychainServiceError describing the issue encountered.
 	@discardableResult
 	public class func removePassword(withService service: String,
-									 account: String,
+									 account: String? = nil,
 									 accessGroup: String? = nil) -> KeychainResult {
 		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
 		let deleteQuery = query(withService: service, account: account, accessGroup: accessGroup)
