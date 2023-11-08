@@ -58,7 +58,7 @@ final class SwiftyKeychainTests: XCTestCase {
 		
 		let result = Keychain.save(password: password,
 								   forAccount: account,
-								   service: service)
+								   forService: service)
 		if case let Keychain.KeychainResult.failure(error) = result {
 			XCTFail("Failed with error \(error)")
 			return
@@ -102,7 +102,7 @@ final class SwiftyKeychainTests: XCTestCase {
 		
 		let result = Keychain.save(password: password,
 								   forAccount: account,
-								   service: service)
+								   forService: service)
 		if case let Keychain.KeychainResult.failure(error) = result {
 			XCTFail("Failed with error \(error)")
 			return
