@@ -65,13 +65,11 @@ final class SwiftyKeychainTests: XCTestCase {
 								accessGroup: nil)
 	}
 
-	func testPasswordUpdate() {
+	func testPasswordUpdateNoAccount() {
 		let password = "1234"
-		let account = "cdw"
 		let service = "com.SwiftyKeychain.UnitTest"
 
 		let result = Keychain.save(password: password,
-								   forAccount: account,
 								   forService: service)
 
 		if case let Keychain.KeychainResult.failure(error) = result {
@@ -79,11 +77,9 @@ final class SwiftyKeychainTests: XCTestCase {
 		}
 
 		Keychain.save(password: "4321",
-					  forAccount: account,
 					  forService: service)
 
 		let retrieveResult = Keychain.retrievePassword(withService: service,
-													   account: account,
 													   accessGroup: nil)
 		if case let Keychain.KeychainPasswordResult.failure(error) = retrieveResult {
 			XCTFail("Failed with error \(error)")
@@ -92,7 +88,6 @@ final class SwiftyKeychainTests: XCTestCase {
 		}
 
 		Keychain.removePassword(withService: service,
-								account: account,
 								accessGroup: nil)
 	}
 
