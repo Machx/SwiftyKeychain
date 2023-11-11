@@ -74,16 +74,14 @@ public final class Keychain {
 	///   - service: A required Service to use to associate the account/password with.
 	///   - accessGroup: An optional accessGroup to use to associate with the password.
 	/// - Returns: A result of success (always will return true) if successfully saved, otherwise returns an error.
-	@discardableResult
 	public class func save(password: String,
 						   forAccount account: String? = nil,
 						   forService service: String,
-						   accessGroup: String? = nil) -> KeychainResult {
-		guard !service.isEmpty else { return .failure(.serviceNotSpecified) }
-		guard let encodedPassword = password.data(using: .utf8) else { return .failure(.errorEncodingData) }
-		
-		let passwordResult = retrievePassword(withService: service, account: account, accessGroup: accessGroup)
-		if case .success(let retrievedPassword) = passwordResult {
+						   accessGroup: String? = nil) throws {
+		guard !service.isEmpty else { throw KeychainServiceError.serviceNotSpecified }
+		guard let encodedPassword = password.data(using: .utf8) else { throw KeychainServiceError.errorEncodingData }
+
+		if let retrievedPassword = try? retrievePassword(withService: service, account: account, accessGroup: accessGroup) {
 			// Previous Password Stored in Keychain...
 			guard retrievedPassword != password else {
 				return .success(true)
