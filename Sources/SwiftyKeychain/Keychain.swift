@@ -39,9 +39,9 @@ public final class Keychain {
 	@discardableResult
 	public class func retrievePassword(withService service: String,
 									   account: String? = nil,
-									   accessGroup: String? = nil) -> KeychainPasswordResult {
+									   accessGroup: String? = nil) throws -> String {
 		guard !service.isEmpty else {
-			return .failure(.serviceNotSpecified)
+			throw KeychainServiceError.serviceNotSpecified
 		}
 		var findPasswordQuery = query(withService: service, account: account, accessGroup: accessGroup)
 		configure(&findPasswordQuery, limit: .one, returnAttributes: true, returnData: true)
@@ -52,22 +52,21 @@ public final class Keychain {
 		}
 		
 		guard status != errSecItemNotFound else {
-			return .failure(.couldNotFindPassword)
+			throw KeychainServiceError.couldNotFindPassword
 		}
 		guard status == noErr else {
-			return .failure(.unhandledError(status: status))
+			throw KeychainServiceError.unhandledError(status: status)
 		}
 		
 		guard let existingPasswordItem = findPasswordResult as? [String:AnyObject],
 			  let passwordData = existingPasswordItem[kSecValueData as String] as? Data,
 			  let password = String(data: passwordData, encoding: .utf8) else {
-			return .failure(.problemConvertingDataFromKeychain)
+			throw KeychainServiceError.problemConvertingDataFromKeychain
 		}
 		
-		return .success(password)
+		return password
 	}
-	
-	
+
 	/// Saves the password to the keychain with the given additional parameters.
 	/// - Parameters:
 	///   - password: The Password to be saved.
