@@ -83,32 +83,28 @@ public final class Keychain {
 
 		if let retrievedPassword = try? retrievePassword(withService: service, account: account, accessGroup: accessGroup) {
 			// Previous Password Stored in Keychain...
-			guard retrievedPassword != password else {
-				return .success(true)
-			}
-			
+			guard retrievedPassword != password else { return }
+
 			var updatingAttributes = [String:AnyObject]()
 			updatingAttributes[kSecValueData as String] = encodedPassword as AnyObject
-			
+
 			let passwordQuery = query(withService: service, account: account, accessGroup: accessGroup)
 			let status = SecItemUpdate(passwordQuery as CFDictionary, updatingAttributes as CFDictionary)
-			
+
 			guard status == noErr else {
-				return .failure(.unhandledError(status: status))
+				throw KeychainServiceError.unhandledError(status: status)
 			}
 		} else {
 			// No password currently stored in the keychain...
 			var newPassword = query(withService: service, account: account, accessGroup: accessGroup)
 			newPassword[kSecValueData as String] = encodedPassword as AnyObject?
-			
+
 			let status = SecItemAdd(newPassword as CFDictionary, nil)
-			
+
 			guard status == noErr else {
-				return .failure(.failureSavingNewPassword)
+				throw KeychainServiceError.failureSavingNewPassword
 			}
 		}
-		
-		return .success(true)
 	}
 	
 	/// Removes a given password from the Keychain
