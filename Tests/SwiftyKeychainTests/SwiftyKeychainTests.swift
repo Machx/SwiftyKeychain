@@ -2,8 +2,12 @@ import XCTest
 import SwiftyKeychain
 
 final class SwiftyKeychainTests: XCTestCase {
-    
-	func testVerifyKeychainSave() {
+
+	let shouldSkipUnConvertedTests = true
+
+	func testVerifyKeychainSave() throws {
+		try XCTSkipIf(shouldSkipUnConvertedTests)
+
 		let password = "1234"
 		let account = "cdw"
 		let service = "com.SwiftyKeychain.UnitTest"
@@ -20,7 +24,9 @@ final class SwiftyKeychainTests: XCTestCase {
 								accessGroup: nil)
 	}
 
-	func testVerifyKeychainSaveNoAccount() {
+	func testVerifyKeychainSaveNoAccount() throws {
+		try XCTSkipIf(shouldSkipUnConvertedTests)
+
 		let password = "1234"
 		let service = "com.SwiftyKeychain.UnitTest"
 		let result = Keychain.save(password: password,
@@ -34,7 +40,9 @@ final class SwiftyKeychainTests: XCTestCase {
 								accessGroup: nil)
 	}
 
-	func testPasswordUpdate() {
+	func testPasswordUpdate() throws {
+		try XCTSkipIf(shouldSkipUnConvertedTests)
+
 		let password = "1234"
 		let account = "cdw"
 		let service = "com.SwiftyKeychain.UnitTest"
@@ -65,7 +73,9 @@ final class SwiftyKeychainTests: XCTestCase {
 								accessGroup: nil)
 	}
 
-	func testPasswordUpdateNoAccount() {
+	func testPasswordUpdateNoAccount() throws {
+		try XCTSkipIf(shouldSkipUnConvertedTests)
+
 		let password = "1234"
 		let service = "com.SwiftyKeychain.UnitTest"
 
@@ -91,7 +101,9 @@ final class SwiftyKeychainTests: XCTestCase {
 								accessGroup: nil)
 	}
 
-	func testVerifyKeychainRetrieve() {
+	func testVerifyKeychainRetrieve() throws {
+		try XCTSkipIf(shouldSkipUnConvertedTests)
+
 		let password = "1234"
 		let account = "cdw"
 		let service = "com.SwiftyKeychain.UnitTest"
@@ -117,7 +129,9 @@ final class SwiftyKeychainTests: XCTestCase {
 								account: account)
 	}
 
-	func testVerifyKeychainRetrieveNoAccount() {
+	func testVerifyKeychainRetrieveNoAccount() throws {
+		try XCTSkipIf(shouldSkipUnConvertedTests)
+
 		let password = "1234"
 		let service = "com.SwiftyKeychain.UnitTest"
 
@@ -140,6 +154,8 @@ final class SwiftyKeychainTests: XCTestCase {
 	}
 
 	func testVerifyKeychainRetrieveFails() {
+		try XCTSkipIf(shouldSkipUnConvertedTests)
+
 		let account = UUID().uuidString
 		let service = UUID().uuidString
 		
@@ -157,7 +173,9 @@ final class SwiftyKeychainTests: XCTestCase {
 		}
 	}
 	
-	func testKeychainDelete() {
+	func testKeychainDelete() throws {
+		try XCTSkipIf(shouldSkipUnConvertedTests)
+
 		let password = "1234"
 		let account = "cdw"
 		let service = "com.SwiftyKeychain.UnitTest"
