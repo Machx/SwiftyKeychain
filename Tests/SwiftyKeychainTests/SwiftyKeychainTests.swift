@@ -6,22 +6,22 @@ final class SwiftyKeychainTests: XCTestCase {
 	let shouldSkipUnConvertedTests = true
 
 	func testVerifyKeychainSave() throws {
-		try XCTSkipIf(shouldSkipUnConvertedTests)
+		let password = "1234"
+		let account = "cdw"
+		let service = "com.SwiftyKeychain.UnitTest"
 
-//		let password = "1234"
-//		let account = "cdw"
-//		let service = "com.SwiftyKeychain.UnitTest"
-//		let result = Keychain.save(password: password,
-//								   forAccount: account,
-//								   forService: service)
-//
-//		if case let Keychain.KeychainResult.failure(error) = result {
-//			XCTFail("Failed to save password to keychain with error = \(error)")
-//		}
-//		
-//		Keychain.removePassword(withService: service,
-//								account: account,
-//								accessGroup: nil)
+		try Keychain.save(password: password,
+						  forAccount: account,
+						  forService: service)
+		defer {
+			try? Keychain.removePassword(withService: service,
+										account: account)
+		}
+
+		let retrievedPassword = try Keychain.retrievePassword(withService: service,
+															  account: account)
+
+		XCTAssertEqual(retrievedPassword, password)
 	}
 
 	func testVerifyKeychainSaveNoAccount() throws {
