@@ -133,40 +133,31 @@ final class SwiftyKeychainTests: XCTestCase {
 	}
 	
 	func testKeychainDelete() throws {
-		try XCTSkipIf(shouldSkipUnConvertedTests)
+		let password = "1234"
+		let account = "cdw"
+		let service = "com.SwiftyKeychain.UnitTest"
 
-//		let password = "1234"
-//		let account = "cdw"
-//		let service = "com.SwiftyKeychain.UnitTest"
-//		
-//		let result = Keychain.save(password: password,
-//								   forAccount: account,
-//								   forService: service)
-//		if case let Keychain.KeychainResult.failure(error) = result {
-//			XCTFail("Failed with error \(error)")
-//			return
-//		}
-//		
-//		let retrieveResult = Keychain.retrievePassword(withService: service,
-//													   account: account,
-//													   accessGroup: nil)
-//		if case let Keychain.KeychainPasswordResult.failure(error) = retrieveResult {
-//			XCTFail("Failed with error \(error)")
-//		} else if case let Keychain.KeychainPasswordResult.success(retrievedPassword) = retrieveResult {
-//			XCTAssertEqual(retrievedPassword, password)
-//		}
-//		
-//		Keychain.removePassword(withService: service,
-//								account: account,
-//								accessGroup: nil)
-//		
-//		let retrieveAfterDeleteResult = Keychain.retrievePassword(withService: service, account: account, accessGroup: nil)
-//		if case let Keychain.KeychainPasswordResult.failure(error) = retrieveAfterDeleteResult {
-//			if error != Keychain.KeychainServiceError.couldNotFindPassword {
-//				XCTFail("Should not be able to find new keychain")
-//			}
-//		} else {
-//			XCTFail("Found a password when we shouldn't have found one")
-//		}
+		try Keychain.save(password: password,
+						  forAccount: account,
+						  forService: service)
+
+		let retrievedPassword = try Keychain.retrievePassword(withService: service,
+															  account: account)
+		XCTAssertEqual(retrievedPassword, password)
+
+		try Keychain.removePassword(withService: service,
+									account: account,
+									accessGroup: nil)
+
+		do {
+			try Keychain.removePassword(withService: service,
+										account: account,
+										accessGroup: nil)
+			XCTFail("This should never fail as the above remove password should fail.")
+		} catch Keychain.KeychainServiceError.couldNotFindPassword {
+			logger.debug("Encountered expected error. \(logLocation())")
+		} catch {
+			XCTFail("Encountered unexpected error: \(error)")
+		}
 	}
 }
