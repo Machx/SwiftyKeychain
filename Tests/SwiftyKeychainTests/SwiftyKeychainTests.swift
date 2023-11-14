@@ -1,9 +1,14 @@
 import XCTest
 import SwiftyKeychain
+import Konkyo
+import os.log
 
 final class SwiftyKeychainTests: XCTestCase {
 
 	let shouldSkipUnConvertedTests = true
+	//FIXME: update unit tests with unique service for each test so they can run at same time
+
+	let logger = Logger(subsystem: "com.SwiftyKeychainTests.\(#file)", category: "general")
 
 	func testVerifyKeychainSave() throws {
 		let password = "1234"
@@ -112,23 +117,19 @@ final class SwiftyKeychainTests: XCTestCase {
 	}
 
 	func testVerifyKeychainRetrieveFails() throws {
-		try XCTSkipIf(shouldSkipUnConvertedTests)
+		let account = UUID().uuidString
+		let service = UUID().uuidString
 
-//		let account = UUID().uuidString
-//		let service = UUID().uuidString
-//		
-//		let retrieveResult = Keychain.retrievePassword(withService: service,
-//													   account: account,
-//													   accessGroup: nil)
-//		if case let Keychain.KeychainPasswordResult.success(retrievedPassword) = retrieveResult {
-//			XCTFail("Should not have retrieved a password for an account which should not exist. Password = '\(retrievedPassword)'")
-//		}
-//		
-//		if case let Keychain.KeychainPasswordResult.failure(keychainError) = retrieveResult {
-//			XCTAssertEqual(keychainError, .couldNotFindPassword)
-//		} else {
-//			XCTFail("Somehow the failure was not detected")
-//		}
+		do {
+			let _ = try Keychain.retrievePassword(withService: service,
+																  account: account,
+																  accessGroup: nil)
+			XCTFail("the previous API should have failed")
+		} catch Keychain.KeychainServiceError.couldNotFindPassword {
+			logger.debug("Caught Expected Error.\(logLocation())")
+		} catch {
+			XCTFail("Received unexpected error: \(error)")
+		}
 	}
 	
 	func testKeychainDelete() throws {
