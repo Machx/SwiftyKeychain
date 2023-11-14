@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Konkyo",
+        "repositoryURL": "https://github.com/Machx/Konkyo.git",
+        "state": {
+          "branch": "main",
+          "revision": "28e2e0c55f659301dbb3e92e70e2be8de741bcee",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
