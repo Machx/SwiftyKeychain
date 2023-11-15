@@ -6,20 +6,17 @@ Swifty keychain is a simple Swift API wrapper around Apples Keychain API's.
 
 ```swift
 let password = "1234"
-let account = "cdw"
+let account = "MyApp"
 
 //Saving a Password
-let result = Keychain.save(password: password,
-						   forAccount: account,
-						   service: service)
+try Keychain.save(password: password,
+				forService: service)
 
 // Retrieving a password
-let retrieveResult = Keychain.retrievePassword(withService: service,
-			account: account)
+let retrievedPassword = try Keychain.retrievePassword(withService: service)
 
 // Deleting a password
-Keychain.removePassword(withService: service,
-			account: account)
+try Keychain.removePassword(withService: service)
 ```
 
 ## License
