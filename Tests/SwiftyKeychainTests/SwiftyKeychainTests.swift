@@ -4,15 +4,12 @@ import os.log
 
 final class SwiftyKeychainTests: XCTestCase {
 
-	let shouldSkipUnConvertedTests = true
-	//FIXME: update unit tests with unique service for each test so they can run at same time
-
 	let logger = Logger(subsystem: "com.SwiftyKeychainTests.\(#file)", category: "general")
 
 	func testVerifyKeychainSave() throws {
 		let password = "1234"
 		let account = "cdw"
-		let service = "com.SwiftyKeychain.UnitTest"
+		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password,
 						  forAccount: account,
@@ -30,7 +27,7 @@ final class SwiftyKeychainTests: XCTestCase {
 
 	func testVerifyKeychainSaveNoAccount() throws {
 		let password = "1234"
-		let service = "com.SwiftyKeychain.UnitTest"
+		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password,
 						  forService: service)
@@ -46,7 +43,7 @@ final class SwiftyKeychainTests: XCTestCase {
 	func testPasswordUpdate() throws {
 		let password = "1234"
 		let account = "cdw"
-		let service = "com.SwiftyKeychain.UnitTest"
+		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password,
 					  forAccount: account,
@@ -69,7 +66,7 @@ final class SwiftyKeychainTests: XCTestCase {
 
 	func testPasswordUpdateNoAccount() throws {
 		let password = "1234"
-		let service = "com.SwiftyKeychain.UnitTest"
+		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password,
 						  forService: service)
@@ -87,7 +84,7 @@ final class SwiftyKeychainTests: XCTestCase {
 	func testVerifyKeychainRetrieve() throws {
 		let password = "1234"
 		let account = "cdw"
-		let service = "com.SwiftyKeychain.UnitTest"
+		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password,
 						  forAccount: account,
@@ -104,7 +101,7 @@ final class SwiftyKeychainTests: XCTestCase {
 
 	func testVerifyKeychainRetrieveNoAccount() throws {
 		let password = "1234"
-		let service = "com.SwiftyKeychain.UnitTest"
+		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password, forService: service)
 		defer {
@@ -134,7 +131,7 @@ final class SwiftyKeychainTests: XCTestCase {
 	func testKeychainDelete() throws {
 		let password = "1234"
 		let account = "cdw"
-		let service = "com.SwiftyKeychain.UnitTest"
+		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password,
 						  forAccount: account,
