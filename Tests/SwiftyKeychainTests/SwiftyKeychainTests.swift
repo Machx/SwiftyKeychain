@@ -1,6 +1,5 @@
 import XCTest
 import SwiftyKeychain
-import Konkyo
 import os.log
 
 final class SwiftyKeychainTests: XCTestCase {
@@ -126,7 +125,7 @@ final class SwiftyKeychainTests: XCTestCase {
 																  accessGroup: nil)
 			XCTFail("the previous API should have failed")
 		} catch Keychain.KeychainServiceError.couldNotFindPassword {
-			logger.debug("Caught Expected Error.\(logLocation())")
+			logger.debug("Caught Expected Error.")
 		} catch {
 			XCTFail("Received unexpected error: \(error)")
 		}
@@ -155,7 +154,7 @@ final class SwiftyKeychainTests: XCTestCase {
 										accessGroup: nil)
 			XCTFail("This should never fail as the above remove password should fail.")
 		} catch Keychain.KeychainServiceError.couldNotFindPassword {
-			logger.debug("Encountered expected error. \(logLocation())")
+			logger.debug("Encountered expected error.")
 		} catch {
 			XCTFail("Encountered unexpected error: \(error)")
 		}
