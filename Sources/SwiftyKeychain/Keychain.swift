@@ -116,7 +116,9 @@ public final class Keychain {
 									 account: String? = nil,
 									 accessGroup: String? = nil) throws {
 		guard !service.isEmpty else { throw KeychainServiceError.serviceNotSpecified }
-		let deleteQuery = query(withService: service, account: account, accessGroup: accessGroup)
+		let deleteQuery = query(withService: service, 
+								account: account,
+								accessGroup: accessGroup)
 		let status = SecItemDelete(deleteQuery as CFDictionary)
 		
 		guard status != errSecItemNotFound else {
