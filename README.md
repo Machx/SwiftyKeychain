@@ -1,6 +1,6 @@
 # SwiftyKeychain
 
-Swifty keychain is a simple Swift API wrapper around Apples Keychain API's. 
+Swifty keychain is a simple Swift API wrapper around Apples Keychain API's. It aims to provide a simple, and yet flexible Keychain wrapper with no additional dependencies. 
 
 ## Usage
 
