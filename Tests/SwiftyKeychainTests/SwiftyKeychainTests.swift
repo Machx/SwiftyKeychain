@@ -19,7 +19,7 @@ final class SwiftyKeychainTests: XCTestCase {
 										account: account)
 		}
 
-		let retrievedPassword = try Keychain.retrievePassword(withService: service,
+		let retrievedPassword = try Keychain.retrievePassword(forService: service,
 															  account: account)
 
 		XCTAssertEqual(retrievedPassword, password)
@@ -35,7 +35,7 @@ final class SwiftyKeychainTests: XCTestCase {
 			try? Keychain.removePassword(withService: service)
 		}
 
-		let retrievedPassword = try Keychain.retrievePassword(withService: service)
+		let retrievedPassword = try Keychain.retrievePassword(forService: service)
 
 		XCTAssertEqual(retrievedPassword, password)
 	}
@@ -57,7 +57,7 @@ final class SwiftyKeychainTests: XCTestCase {
 						  forAccount: account,
 						  forService: service)
 
-		let retrievedPassword = try Keychain.retrievePassword(withService: service,
+		let retrievedPassword = try Keychain.retrievePassword(forService: service,
 															  account: account,
 															  accessGroup: nil)
 
@@ -77,7 +77,7 @@ final class SwiftyKeychainTests: XCTestCase {
 		try Keychain.save(password: "4321",
 						  forService: service)
 
-		let retrievedPassword = try Keychain.retrievePassword(withService: service)
+		let retrievedPassword = try Keychain.retrievePassword(forService: service)
 		XCTAssertEqual(retrievedPassword, "4321")
 }
 
@@ -94,7 +94,7 @@ final class SwiftyKeychainTests: XCTestCase {
 										 account: account)
 		}
 
-		let retrievedPassword = try Keychain.retrievePassword(withService: service, 
+		let retrievedPassword = try Keychain.retrievePassword(forService: service, 
 															  account: account)
 		XCTAssertEqual(retrievedPassword, password)
 	}
@@ -108,7 +108,7 @@ final class SwiftyKeychainTests: XCTestCase {
 			try? Keychain.removePassword(withService: service)
 		}
 
-		let retrievedPassword = try Keychain.retrievePassword(withService: service)
+		let retrievedPassword = try Keychain.retrievePassword(forService: service)
 		XCTAssertEqual(retrievedPassword, password)
 	}
 
@@ -117,7 +117,7 @@ final class SwiftyKeychainTests: XCTestCase {
 		let service = UUID().uuidString
 
 		do {
-			let _ = try Keychain.retrievePassword(withService: service,
+			let _ = try Keychain.retrievePassword(forService: service,
 																  account: account,
 																  accessGroup: nil)
 			XCTFail("the previous API should have failed")
@@ -137,7 +137,7 @@ final class SwiftyKeychainTests: XCTestCase {
 						  forAccount: account,
 						  forService: service)
 
-		let retrievedPassword = try Keychain.retrievePassword(withService: service,
+		let retrievedPassword = try Keychain.retrievePassword(forService: service,
 															  account: account)
 		XCTAssertEqual(retrievedPassword, password)
 
