@@ -36,7 +36,7 @@ public final class Keychain {
 	///   - accessGroup: Optional Access group associated with the password.
 	/// - Returns: A Result with the password, or an error describing the problem encountered retrieving it.
 	@discardableResult
-	public class func retrievePassword(withService service: String,
+	public class func retrievePassword(forService service: String,
 									   account: String? = nil,
 									   accessGroup: String? = nil) throws -> String {
 		guard !service.isEmpty else {
@@ -80,7 +80,7 @@ public final class Keychain {
 		guard !service.isEmpty else { throw KeychainServiceError.serviceNotSpecified }
 		guard let encodedPassword = password.data(using: .utf8) else { throw KeychainServiceError.errorEncodingData }
 
-		if let retrievedPassword = try? retrievePassword(withService: service, account: account, accessGroup: accessGroup) {
+		if let retrievedPassword = try? retrievePassword(forService: service, account: account, accessGroup: accessGroup) {
 			// Previous Password Stored in Keychain...
 			guard retrievedPassword != password else { return }
 
