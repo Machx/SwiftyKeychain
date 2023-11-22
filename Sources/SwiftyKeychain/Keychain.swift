@@ -66,6 +66,11 @@ public final class Keychain {
 		return password
 	}
 
+	public class func retrieveAllPasswords(forService service: String,
+										   accessGroup: String? = nil) throws -> [String] {
+		return []
+	}
+
 	/// Saves the password to the keychain with the given additional parameters.
 	/// - Parameters:
 	///   - password: The Password to be saved.
