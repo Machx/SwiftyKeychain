@@ -68,6 +68,28 @@ public final class Keychain {
 
 	public class func retrieveAllPasswords(forService service: String,
 										   accessGroup: String? = nil) throws -> [String] {
+		guard !service.isEmpty else {
+			throw KeychainServiceError.serviceNotSpecified
+		}
+		var findPasswordQuery = query(withService: service, account: nil, accessGroup: accessGroup)
+		configure(&findPasswordQuery, limit: .all, returnAttributes: true, returnData: false)
+
+		var items: CFTypeRef?
+		let status = withUnsafeMutablePointer(to: &items) {
+			SecItemCopyMatching(findPasswordQuery as CFDictionary, UnsafeMutablePointer($0))
+		}
+
+		guard status == noErr,
+		let else {
+			throw KeychainServiceError.unhandledError(status: status)
+		}
+
+//		guard status != errSecItemNotFound else {
+//			return []
+//		}
+
+
+
 		return []
 	}
 
