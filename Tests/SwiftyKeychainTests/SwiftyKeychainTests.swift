@@ -40,6 +40,18 @@ final class SwiftyKeychainTests: XCTestCase {
 		XCTAssertEqual(retrievedPassword, password)
 	}
 
+	func testFindAllPasswords() throws {
+		let pass1 = "1234"
+		let pass2 = "2345"
+		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
+
+		try Keychain.save(password: pass1, forService: service)
+		try Keychain.save(password: pass2, forService: service)
+
+		let passwords = try Keychain.retrieveAllPasswords(forService: service)
+		XCTAssertEqual(passwords.count, 2)
+	}
+
 	func testPasswordUpdate() throws {
 		let password = "1234"
 		let account = "cdw"
