@@ -80,8 +80,17 @@ public final class Keychain {
 		}
 
 		guard status == noErr,
-		let else {
+			  let entries = items as? [[String : Any]] else {
 			throw KeychainServiceError.unhandledError(status: status)
+		}
+
+		var results = [String]()
+		for entry in entries {
+			if let account = entry[kSecAttrAccount as String],
+			   let data = entry[kSecValueData as String] as? Data,
+			   let value = String(data: data, encoding: .utf8) {
+				results.append(value)
+			}
 		}
 
 //		guard status != errSecItemNotFound else {
