@@ -67,7 +67,7 @@ public final class Keychain {
 	}
 
 	public class func retrieveAllPasswords(forService service: String,
-										   accessGroup: String? = nil) throws -> [String] {
+										   accessGroup: String? = nil) throws -> [String:String] {
 		guard !service.isEmpty else {
 			throw KeychainServiceError.serviceNotSpecified
 		}
