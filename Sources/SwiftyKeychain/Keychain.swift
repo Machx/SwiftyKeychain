@@ -84,14 +84,16 @@ public final class Keychain {
 			throw KeychainServiceError.unhandledError(status: status)
 		}
 
-		var results = [String]()
+		var results = [String:String]()
 		for entry in entries {
-			if let account = entry[kSecAttrAccount as String],
-			   let data = entry[kSecValueData as String] as? Data,
-			   let value = String(data: data, encoding: .utf8) {
-				results.append(value)
+			guard let accountData = entry[kSecAttrAccount as String],
+				  let account = accountData as? String else {
+				continue
 			}
+			let password = try Keychain.retrievePassword(forService: service, account: account)
+			results[account] = password
 		}
+		return results
 	}
 
 	/// Saves the password to the keychain with the given additional parameters.
