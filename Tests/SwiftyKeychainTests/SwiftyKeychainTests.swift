@@ -49,8 +49,13 @@ final class SwiftyKeychainTests: XCTestCase {
 		try Keychain.save(password: pass2, forAccount: "cdw2", forService: service)
 
 		let passwords = try Keychain.retrieveAllPasswords(forService: service)
-		XCTAssertEqual(passwords.count, 2)
-	}
+
+		let cdw1Password = try XCTUnwrap(passwords["cdw1"])
+		XCTAssertEqual(cdw1Password, pass1)
+
+		let cdw2Password = try XCTUnwrap(passwords["cdw2"])
+		XCTAssertEqual(cdw2Password, pass2)
+	}\
 
 	func testPasswordUpdate() throws {
 		let password = "1234"
