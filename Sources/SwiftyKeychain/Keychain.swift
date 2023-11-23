@@ -92,28 +92,6 @@ public final class Keychain {
 				results.append(value)
 			}
 		}
-
-//		guard status != errSecItemNotFound else {
-//			return []
-//		}
-
-
-
-		return []
-//		guard status != errSecItemNotFound else {
-//			throw KeychainServiceError.couldNotFindPassword
-//		}
-//		guard status == noErr else {
-//			throw KeychainServiceError.unhandledError(status: status)
-//		}
-//
-//		guard let existingPasswordItem = findPasswordResult as? [String:AnyObject],
-//			  let passwordData = existingPasswordItem[kSecValueData as String] as? Data else {
-//			throw KeychainServiceError.problemConvertingDataFromKeychain
-//		}
-//
-//		let passwords = try JSONDecoder().decode([String].self, from: passwordData)
-//		return passwords
 	}
 
 	/// Saves the password to the keychain with the given additional parameters.
