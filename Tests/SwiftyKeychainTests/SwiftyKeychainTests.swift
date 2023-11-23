@@ -55,7 +55,7 @@ final class SwiftyKeychainTests: XCTestCase {
 
 		let cdw2Password = try XCTUnwrap(passwords["cdw2"])
 		XCTAssertEqual(cdw2Password, pass2)
-	}\
+	}
 
 	func testPasswordUpdate() throws {
 		let password = "1234"
