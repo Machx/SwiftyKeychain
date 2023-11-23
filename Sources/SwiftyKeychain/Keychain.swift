@@ -65,7 +65,12 @@ public final class Keychain {
 		
 		return password
 	}
-
+	
+	/// Retrieves all passwords with accounts for a given service.
+	/// - Parameters:
+	///   - service: The Service used for the password
+	///   - accessGroup: The access group used. Optional.
+	/// - Returns: A dictionary of all account/password key pairs found from the Keychain or an empty dictionary if none were found.
 	public class func retrieveAllPasswords(forService service: String,
 										   accessGroup: String? = nil) throws -> [String:String] {
 		guard !service.isEmpty else {
