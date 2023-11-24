@@ -62,6 +62,19 @@ final class SwiftyKeychainTests: XCTestCase {
 		XCTAssertEqual(cdw2Password, pass2)
 	}
 
+	func testFindAllPasswordsWithNoAccountPasswords() throws {
+		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
+
+		try Keychain.save(password: "pass", forService: service)
+		defer {
+			try? Keychain.removePassword(withService: service)
+		}
+
+		let passwords = try Keychain.retrieveAllPasswords(forService: service)
+
+		XCTAssertEqual(passwords.count, 0)
+	}
+
 	func testFindAllPasswordsEmpty() throws {
 		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 		let caughtFailure: Bool
