@@ -12,7 +12,7 @@ final class SwiftyKeychainTests: XCTestCase {
 		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password,
-						  forAccount: account,
+						  account: account,
 						  forService: service)
 		defer {
 			try? Keychain.removePassword(withService: service,
@@ -45,8 +45,8 @@ final class SwiftyKeychainTests: XCTestCase {
 		let pass2 = "2345"
 		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
-		try Keychain.save(password: pass1, forAccount: "cdw1", forService: service)
-		try Keychain.save(password: pass2, forAccount: "cdw2", forService: service)
+		try Keychain.save(password: pass1, account: "cdw1", forService: service)
+		try Keychain.save(password: pass2, account: "cdw2", forService: service)
 
 		let passwords = try Keychain.retrieveAllPasswords(forService: service)
 		defer {
@@ -93,7 +93,7 @@ final class SwiftyKeychainTests: XCTestCase {
 		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password,
-					  forAccount: account,
+					  account: account,
 					  forService: service)
 		defer {
 			try? Keychain.removePassword(withService: service,
@@ -101,7 +101,7 @@ final class SwiftyKeychainTests: XCTestCase {
 		}
 
 		try Keychain.save(password: "4321",
-						  forAccount: account,
+						  account: account,
 						  forService: service)
 
 		let retrievedPassword = try Keychain.retrievePassword(forService: service,
@@ -134,7 +134,7 @@ final class SwiftyKeychainTests: XCTestCase {
 		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password,
-						  forAccount: account,
+						  account: account,
 						  forService: service)
 		defer {
 			try? Keychain.removePassword(withService: service,
@@ -181,7 +181,7 @@ final class SwiftyKeychainTests: XCTestCase {
 		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
 
 		try Keychain.save(password: password,
-						  forAccount: account,
+						  account: account,
 						  forService: service)
 
 		let retrievedPassword = try Keychain.retrievePassword(forService: service,
