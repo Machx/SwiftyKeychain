@@ -109,7 +109,7 @@ public final class Keychain {
 	///   - accessGroup: An optional accessGroup to use to associate with the password.
 	/// - Returns: A result of success (always will return true) if successfully saved, otherwise returns an error.
 	public class func save(password: String,
-						   forAccount account: String? = nil,
+						   account: String? = nil,
 						   forService service: String,
 						   accessGroup: String? = nil) throws {
 		guard !service.isEmpty else { throw KeychainServiceError.serviceNotSpecified }
