@@ -77,14 +77,8 @@ final class SwiftyKeychainTests: XCTestCase {
 
 	func testFindAllPasswordsEmpty() throws {
 		let service = "com.SwiftyKeychain.UnitTest-\(UUID().uuidString)"
-		let caughtFailure: Bool
-		do {
-			let _ = try Keychain.retrieveAllPasswords(forService: service)
-			caughtFailure = false
-		} catch {
-			caughtFailure = true
-		}
-		XCTAssertTrue(caughtFailure)
+
+		XCTAssertThrowsError(try Keychain.retrieveAllPasswords(forService: service))
 	}
 
 	func testPasswordUpdate() throws {
