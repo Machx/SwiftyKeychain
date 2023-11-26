@@ -179,15 +179,8 @@ final class SwiftyKeychainTests: XCTestCase {
 									account: account,
 									accessGroup: nil)
 
-		do {
-			try Keychain.removePassword(withService: service,
-										account: account,
-										accessGroup: nil)
-			XCTFail("This should never fail as the above remove password should fail.")
-		} catch Keychain.KeychainServiceError.couldNotFindPassword {
-			logger.debug("Encountered expected error.")
-		} catch {
-			XCTFail("Encountered unexpected error: \(error)")
-		}
+		XCTAssertThrowsError(try Keychain.removePassword(withService: service,
+														 account: account,
+														 accessGroup: nil))
 	}
 }
