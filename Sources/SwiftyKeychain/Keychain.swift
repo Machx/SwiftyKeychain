@@ -89,6 +89,12 @@ public final class Keychain {
 			throw KeychainServiceError.unhandledError(status: status)
 		}
 
+		guard entries.count > 0 else {
+			/// Have to be consistent behavior. If other API's throw on not found
+			/// then we have to do so here as well.
+			throw KeychainServiceError.couldNotFindPassword
+		}
+
 		var results = [String:String]()
 		for entry in entries {
 			guard let accountData = entry[kSecAttrAccount as String],
