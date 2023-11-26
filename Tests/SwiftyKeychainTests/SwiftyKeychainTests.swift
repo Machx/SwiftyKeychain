@@ -157,16 +157,9 @@ final class SwiftyKeychainTests: XCTestCase {
 		let account = UUID().uuidString
 		let service = UUID().uuidString
 
-		do {
-			let _ = try Keychain.retrievePassword(forService: service,
-																  account: account,
-																  accessGroup: nil)
-			XCTFail("the previous API should have failed")
-		} catch Keychain.KeychainServiceError.couldNotFindPassword {
-			logger.debug("Caught Expected Error.")
-		} catch {
-			XCTFail("Received unexpected error: \(error)")
-		}
+		XCTAssertThrowsError(try Keychain.retrievePassword(forService: service,
+															   account: account,
+															   accessGroup: nil))
 	}
 	
 	func testKeychainDelete() throws {
